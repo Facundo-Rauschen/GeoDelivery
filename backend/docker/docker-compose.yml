@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:15-3.3
+    container_name: geo_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: facuraus123
+      POSTGRES_DB: geodelivery
+    ports:
+      - "5444:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../database/migrations/init.sql:/docker-entrypoint-initdb.d/1_init.sql
+
+  cache:
+    image: redis:alpine
+    container_name: geo_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  osrm:
+    image: osrm/osrm-backend
+    container_name: osrm_argentina
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./osrm-data:/data
+    command: osrm-routed --algorithm mld /data/argentina-260210.osrm.osrm
+
+# Definición de volúmenes nombrados para que Docker los gestione
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.grayscale-map {
+  filter: grayscale(100%) contrast(110%) brightness(95%);
+}
+
+.map-wrapper {
+  height: 100vh;
+  width: 100%;
+}
